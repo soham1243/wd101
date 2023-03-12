@@ -1,105 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Registration Form</title>
-</head>
-<body>
-	<h1>Registration Form</h1>
-	<form id="registration-form">
-		<label for="name">Name:</label>
-		<input type="text" id="name" name="name" required><br><br>
-		
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" required><br><br>
-		
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password" required><br><br>
-		
-		<label for="dob">Date of Birth:</label>
-		<input type="date" id="dob" name="dob" required><br><br>
-		
-		<label for="terms">Accepted terms:</label>
-		<input type="checkbox" id="terms" name="terms" required><br><br>
-		
-		<input type="submit" value="Submit">
-	</form>
-	
-	<table id="registration-table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Password</th>
-				<th>Date of Birth</th>
-				<th>Accepted terms</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-		</tbody>
-	</table>
-	
-	<script>
-		const form = document.getElementById('registration-form');
-		const table = document.getElementById('registration-table');
-		let registrations = [];
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>Date of Birth</th>
+      <th>Accepted terms?</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<form>
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" required>
+  
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+  
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+  
+  <label for="dob">Date of Birth:</label>
+  <input type="date" id="dob" name="dob" required>
+  
+  <label for="terms">Accepted terms?</label>
+  <input type="checkbox" id="terms" name="terms" required>
+  
+  <button type="submit">Submit</button>
+</form>
+const form = document.querySelector('form');
+const tableBody = document.querySelector('table tbody');
 
-		form.addEventListener('submit', (event) => {
-			event.preventDefault();
-			const name = document.getElementById('name').value;
-			const email = document.getElementById('email').value;
-			const password = document.getElementById('password').value;
-			const dob = document.getElementById('dob').value;
-			const terms = document.getElementById('terms').checked;
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  const name = document.querySelector('#name').value;
+  const email = document.querySelector('#email').value;
+  const password = document.querySelector('#password').value;
+  const dob = document.querySelector('#dob').value;
+  const acceptedTerms = document.querySelector('#terms').checked;
 
-			if (isValidEmail(email) && isValidAge(dob)) {
-				const registration = {
-					name: name,
-					email: email,
-					password: password,
-					dob: dob,
-					terms: terms
-				};
-				registrations.push(registration);
-				addRegistrationToTable(registration);
-				form.reset();
-			} else {
-				alert('Invalid email or age');
-			}
-		});
+  // Validate email and age
+  if (!isValidEmail(email)) {
+    alert('Invalid email address');
+    return;
+  }
 
-		function addRegistrationToTable(registration) {
-			const row = table.insertRow();
-			const nameCell = row.insertCell();
-			const emailCell = row.insertCell();
-			const passwordCell = row.insertCell();
-			const dobCell = row.insertCell();
-			const termsCell = row.insertCell();
-
-			nameCell.textContent = registration.name;
-			emailCell.textContent = registration.email;
-			passwordCell.textContent = registration.password;
-			dobCell.textContent = registration.dob;
-			termsCell.textContent = registration.terms ? 'Yes' : 'No';
-		}
-
-		function isValidEmail(email) {
-			const emailRegex = /\S+@\S+\.\S+/;
-			return emailRegex.test(email);
-		}
-
-		function isValidAge(dob) {
-			const dateOfBirth = new Date(dob);
-			const age = calculateAge(dateOfBirth);
-			return age >= 18 && age <= 55;
-		}
-
-		function calculateAge(dateOfBirth) {
-			const today = new Date();
-			const age = today.getFullYear() - dateOfBirth.getFullYear();
-			const monthDifference = today.getMonth() - dateOfBirth.getMonth();
-			return age;
-		}
-	</script>
-	</body>
-</html>
+  const age = calculateAge(dob);
+  if (age < 18 || age > 55) {
+    alert('Age must be between 18 and 55 years');
+    return;
+  }
+  
+  const newRow = tableBody.insertRow();
+  const nameCell = newRow.insertCell();
+  const emailCell = newRow.insertCell();
+  const passwordCell = newRow.insertCell();
+  const dobCell = newRow.insertCell();
+  const acceptedTermsCell = newRow.insertCell();
+  
+  nameCell.textContent = name;
+  emailCell.textContent = email;
+  passwordCell.textContent = password;
+  dobCell.textContent = dob;
+  acceptedTermsCell.textContent = acceptedTerms ? 'Yes' : 'No';
+  
+  // Clear the form
+  form.reset
